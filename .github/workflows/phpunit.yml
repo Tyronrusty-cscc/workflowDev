@@ -38,5 +38,5 @@ jobs:
       run: composer install -n --prefer-dist
 
     - name: Run PHPUnit tests
-      run: k:\data\CodeIgniter-4.4.5-Shared\vendor\bin\phpunit 
+      run: vendor/bin/phpunit --configuration phpunit.xml
       
