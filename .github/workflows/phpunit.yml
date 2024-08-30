@@ -1,42 +1,36 @@
-name: PHPUnit
+name: PHPUnit Tests
 
 on:
   push:
     branches:
-      - main   # Run the tests on push to the main branch
+      - main  # Trigger the workflow on push events to the main branch
   pull_request:
     branches:
-      - '*'   # Run the tests on pull requests to the main branch
+      - '*'  # Trigger the workflow on pull requests targeting any branch
 
 jobs:
-  phpunit:
-
-    name: Run PHPUnit tests
-
-    runs-on: ubuntu-latest
-
-    
-        
+  run-tests:
+    name: Execute PHPUnit Tests
+    runs-on: ubuntu-latest  # Specify the runner environment
 
     steps:
-    - name: Checkout code
-    
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3  # Check out the repository content
 
-    - name: Set up PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2  # Set up PHP environment
+        with:
+          php-version: '8.3.6'  # Define the PHP version
+          extensions: mbstring, pdo, pdo_mysql, curl  # Specify PHP extensions required
+          coverage: none  # Configure code coverage (optional)
 
-      uses: shivammathur/setup-php@v2
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --no-suggest  # Install PHP dependencies
 
-      with:
-        php-version: '8.3.6'
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --configuration phpunit.xml  # Execute PHPUnit tests
 
-        extensions: mbstring, pdo, pdo_mysql, curl  # Add any required PHP extensions
-
-        coverage: none
-
-    - name: Install Composer dependencies
-      run: composer install -n --prefer-dist
-
-    - name: Run PHPUnit tests
-      run: vendor/bin/phpunit --configuration phpunit.xml
-      
+      - name: Check PHP version and installed extensions
+        run: |
+          php -v
+          php -m  # Optional: List installed PHP modules
