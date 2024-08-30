@@ -32,6 +32,9 @@ jobs:
       - name: Make PHPUnit executable
         run: chmod +x vendor/bin/phpunit 
 
+      - name: Make bootstrap readable
+        run: chmod +r tests/bootstrap.php 
+
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit --configuration phpunit.xml  # Execute PHPUnit tests
 
